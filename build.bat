@@ -1,0 +1,1 @@
+clang -L./lib/ -I./include/ -Xlinker /NODEFAULTLIB -lmsvcrt -lucrt -lmsvcprt -lvcruntime -lkernel32 -luser32 -lgdi32 -lshell32 -lglfw3 -std=c99 -Werror main.c src/gl.c
