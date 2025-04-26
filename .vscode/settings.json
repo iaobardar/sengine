@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "sstring.h": "c",
+        "sshader.h": "c",
+        "glew.h": "c",
+        "gl.h": "c"
+    }
+}

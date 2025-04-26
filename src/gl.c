@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glad/gl.h>
+// #include <GL/gl.h>
 
 #ifndef GLAD_IMPL_UTIL_C_
 #define GLAD_IMPL_UTIL_C_

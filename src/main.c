@@ -5,26 +5,16 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
-
+// #include <GL/gl.h>
 #include <assert.h>
 #include <stdio.h>
 #include <math.h>
-
-void LOG(char* msg)
-{
-	printf("\033[32m%s\033[0m\n", msg);
-}
-
-#include "arrays.c"
-#include "sstring.c"
-#include "meth.c"
-#include "sio.c"
-
-#include "swindow.c"
-#include "sshader.c"
-#include "camera.c"
-
-
+#include "sstring.h"
+#include "math.h"
+#include "sio.h"
+#include "swindow.h"
+#include "sshader.h"
+#include "camera.h"
 
 void check_gl_error(const char* operation) {
     GLenum error;
@@ -33,7 +23,7 @@ void check_gl_error(const char* operation) {
     }
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	GLFWwindow* window = start_window("Graphics!");
 	if (!window) return 1;
@@ -47,7 +37,12 @@ int main(void)
 
 
 	// Load shaders
-	shaderlistfile slf = load_shader_file("src/shaders.glsl");
+	if (argc < 2)
+	{
+		printf("Usage: %s <shader_file>\n", argv[0]);
+		return 1;
+	}
+	shaderlistfile slf = load_shader_file(argv[1]);
 	GLuint main_program = init_shader_program(&slf.shaders[0], &slf.shaders[1]);
 
 	GLint camera_mat_ul = glGetUniformLocation(main_program, "camera_transform");

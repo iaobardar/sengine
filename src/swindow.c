@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include "swindow.h"
+
 GLFWwindow* start_window(const char* name)
 {
 	if (!glfwInit()) return 0;

@@ -1,10 +1,6 @@
 #include <stdio.h>
-
-typedef struct
-{
-	size_t length;
-	char* data;
-} sstring;
+#include <assert.h>
+#include "sstring.h"
 
 typedef sstring sstringview;
 
@@ -31,7 +27,7 @@ char ssat(sstring* str, size_t i)
 
 size_t ssfind(sstring* sample, sstring* input, size_t start_index)
 {
-	for (size_t i = start_index; i < input->length - sample->length; ++i)
+	for (size_t i = start_index; i < input->length - sample->length + 1; ++i)
 	{
 		int matching = 1;
 		for (size_t ii = 0; ii < sample->length && matching; ++ii)

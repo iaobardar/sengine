@@ -1,18 +1,20 @@
 #include <stdio.h>
+#include <assert.h>
+#include "sshader.h"
 
-typedef struct {
-	size_t count;
-	sstringview shaders[10];
-	sstring src;
-} shaderlistfile;
+void debug_log(char* msg)
+{
+	printf("\033[32m%s\033[0m\n", msg);
+}
 
 shaderlistfile load_shader_file(char* filename)
 {
-	LOG("loading shaders");
-	LOG(filename);
+	debug_log("loading shaders");
+	debug_log(filename);
 
 	sstring file_src;
 	file_src.length = read_whole_file(filename, (void**)&file_src.data);
+	assert(file_src.length > 0);
 	//putss(&file_src);
 	shaderlistfile slf = {
 		.src = file_src,
@@ -45,7 +47,7 @@ shaderlistfile load_shader_file(char* filename)
 
 GLuint init_shader(GLuint type, sstring* src)
 {
-	LOG("compiling shader:");
+	debug_log("compiling shader:");
 	putss(src);
 
 	const GLsizei msg_size =  512;

@@ -1,0 +1,12 @@
+{
+    "configurations": [
+      {
+        "type": "cppdbg",
+        "request": "launch",
+        "name": "Launch Program",
+        "program": "${workspaceFolder}/build/sengine",
+        "cwd": "${workspaceFolder}/build",
+        "MIMode": "gdb"
+      }
+    ]
+  }
