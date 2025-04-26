@@ -18,5 +18,5 @@ uniform vec4 fill_color;
 
 void main()
 {
-	fColor = vec4(0.5, 0.2, 0.8, 1.0);
+	fColor = mix(vec4(0, 1, 0, 1.0), vec4(1, 1, 1, 1.0), gl_FragCoord.z);
 }
