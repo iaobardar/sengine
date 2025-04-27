@@ -62,9 +62,12 @@ float vec3length(vec3 a)
 	return sqrt(vec3dot(a, a));
 }
 
-float vec3normip(vec3 a)
+void vec3normip(vec3 a)
 {
-	return vec3scale(a, 1 / vec3length(a));
+	float frac = 1 / sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+	a[0] *= frac;
+	a[1] *= frac;
+	a[2] *= frac;
 }
 
 void vec3cross(vec3 a, vec3 b, vec3 out)
@@ -98,19 +101,6 @@ void mat4transform(mat4 transformation, mat4 target)
 	mat4 temp;
 	mat4mult(transformation, target, temp);
 	mat4copy(temp, target);
-}
-
-// Print
-
-void mat4print(mat4 in)
-{
-	for (int r = 0; r < 16; r+=4)
-		printf("%2.2f, %2.2f, %2.2f, %2.2f\n", in[r], in[r + 1], in[r + 2], in[r + 3]);
-}
-
-void vec4print(vec4 in)
-{
-	printf("%2.2f, %2.2f, %2.2f, %2.2f\n", in[0], in[1], in[2], in[3]);
 }
 
 float vec4dot(vec4 a, vec4 b)
@@ -189,4 +179,30 @@ void mat4make_perspective(mat4 a, float near, float far)
 		0, 0, 0, 1,
 	};
 	mat4copy(perspective, a);
+}
+
+void vec4scaleip(vec4 a, float scale)
+{
+	a[0] *= scale;
+	a[1] *= scale;
+	a[2] *= scale;
+	a[3] *= scale;
+}
+
+// Print
+
+void mat4print(mat4 in)
+{
+	for (int r = 0; r < 16; r+=4)
+		printf("%2.2f, %2.2f, %2.2f, %2.2f\n", in[r], in[r + 1], in[r + 2], in[r + 3]);
+}
+
+void vec4print(vec4 in)
+{
+	printf("%2.2f, %2.2f, %2.2f, %2.2f\n", in[0], in[1], in[2], in[3]);
+}
+
+void vec3print(vec3 in)
+{
+	printf("%2.2f, %2.2f, %2.2f\n", in[0], in[1], in[2]);
 }
