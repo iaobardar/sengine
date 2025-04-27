@@ -3,6 +3,8 @@
         "sstring.h": "c",
         "sshader.h": "c",
         "glew.h": "c",
-        "gl.h": "c"
+        "gl.h": "c",
+        "stdio.h": "c",
+        "assert.h": "c"
     }
 }
