@@ -1,9 +1,4 @@
-
-typedef struct {
-	float yaw; float pitch;
-	float x; float y; float z;
-	float focal_length;
-} camera_rig;
+#include "camera.h"
 
 void make_camera_matrix(camera_rig* rig, mat4 camera)
 {

@@ -1,39 +1,35 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Set the project name
-project(sengine C)
+# Project name
+project(sengine LANGUAGES C)
 
-# Specify the C standard
+# Set the C standard
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Add include directories
+# Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# Add the source files
-set(SOURCES
-    src/main.c
-    src/gl.c
+# Link directories
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+
+# Source files
+file(GLOB SOURCES
+    ${CMAKE_SOURCE_DIR}/src/*.c
 )
 
 # Add the executable
 add_executable(sengine ${SOURCES})
 
-# Link the libraries
+# Link libraries
 target_link_libraries(sengine
-    msvcrt
-    ucrt
-    msvcprt
-    vcruntime
-    kernel32
-    user32
-    gdi32
-    shell32
-    glfw3
+    glfw
 )
 
-# Add the library search path
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+# Set build type to Debug if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
-# Enable warnings as errors
-target_compile_options(sengine PRIVATE -Werror)
+# Add debug flags
+set(CMAKE_C_FLAGS_DEBUG "-g")

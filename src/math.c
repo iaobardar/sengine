@@ -1,8 +1,8 @@
-typedef float mat4[4 * 4];
-typedef float vec4[4];
-typedef float vec3[3];
+#include <math.h>
+#include <stdio.h>
+#include "math.h"
 
-#define IDENTITY_MATRIX (mat4) {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}
+static const mat4 IDENTITY_MATRIX = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
 
 // Operations
 
@@ -72,14 +72,14 @@ void vec3normip(vec3 a)
 
 void vec3cross(vec3 a, vec3 b, vec3 out)
 {
-	out[0] = a[1]*b[2] - a[2]*b[1];
-	out[1] = a[2]*b[0] - a[0]*b[2];
-	out[2] = a[0]*b[1] - a[1]*b[0]; 
+	out[0] = a[1] * b[2] - a[2] * b[1];
+	out[1] = a[2] * b[0] - a[0] * b[2];
+	out[2] = a[0] * b[1] - a[1] * b[0]; 
 }
 
 // Mat 4
 
-void mat4copy(mat4 origin, mat4 target)
+void mat4copy(const mat4 origin, mat4 target)
 {
 	for (int i = 0; i < 16; ++i)
 		target[i] = origin[i];
@@ -121,8 +121,7 @@ void mat4multvec3(mat4 a, vec4 b, vec4 out)
 
 void mat4make_identity(mat4 a)
 {
-	mat4 id = IDENTITY_MATRIX;
-	mat4copy(id, a);
+	mat4copy(IDENTITY_MATRIX, a);
 }
 
 

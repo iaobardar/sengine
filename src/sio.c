@@ -1,6 +1,6 @@
-#include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "sio.h"
 
 size_t read_whole_file(const char* filename, void** data)
 {
