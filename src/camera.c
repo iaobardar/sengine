@@ -1,54 +1,31 @@
+#include <stdio.h>
+#include <math.h>
 #include "camera.h"
 
-void make_camera_matrix(camera_rig* rig, mat4 camera)
+void camera_set_angle(mat4 out, const vec3 org, float yaw, float pit)
 {
-	mat4 translate, rotate, perspective, temp;
+    mat4 translate, orientation, perspective, temp;
+	mat4_set_translate(translate, -org[0], -org[1], -org[2]);
+	mat4_set_rotate(orientation, yaw, pit);
+	mat4_set_perspective(perspective, .025, 20);
 
-	mat4make_translate(translate, -rig->x, -rig->y, -rig->z);
-	mat4make_rotate(rotate, -rig->yaw, -rig->pitch);
-	mat4make_perspective(perspective, 0, 1);
+	mat4_mult(translate, orientation, temp);
+    mat4_mult(temp, perspective, out);
 
-	mat4mult(translate, rotate, camera);
-	//mat4mult(temp, perspective, camera);
+	mat4_print(temp);
+	putchar('\n');
+	mat4_print(out);
+	putchar('\n');
 }
 
-void camera_lookat(vec3 origin, vec3 target, mat4 out, float fov)
+void camera_dir(const vec3 origin, const vec3 direction, float fov, mat4 out)
 {
-	vec3 world_up = {0, 0, 1};
-	vec3 up, side, forward;
+    const vec3 world_up = {0, 0, 1};
 
-	vec3sub(target, origin, forward);
-
-	vec3normip(forward);
-
-	vec3cross(forward, world_up, side);
-	vec3normip(side);
-
-	vec3cross(side, forward, up);
-
-	mat4 translate = {
-		1, 0, 0, -origin[0],
-		0, 1, 0, -origin[1],
-		0, 0, 1, -origin[2],
-		0, 0, 0, 1,
-	};
-	mat4 camera = {
-		   side[0],    side[1],    side[2], 0,
-		     up[0],      up[1],      up[2], 0,
-		forward[0], forward[1], forward[2], 0,
-		0, 0, 0, 1,
-	};
-	mat4 perspective = {
-		fov, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 1, 1,
-	};
-	mat4 temp;
-	mat4mult(translate, camera, temp);
-	mat4print(temp);
-	putchar('\n');
-	mat4mult(temp, perspective, out);
-	mat4print(out);
-	putchar('\n');
+    vec3 forward, up, side;
+    vec3_normalize(forward, direction);
+    vec3_cross(forward, world_up, side);
+    vec3_normalizeip(side);
+    vec3_cross(side, forward, up);
+    vec3_normalizeip(up);
 }

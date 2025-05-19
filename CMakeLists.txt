@@ -9,9 +9,10 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/glfw-3.4/include) # Add GLFW include directory
 
-# Link directories
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+# Add GLFW as a subdirectory
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/glfw-3.4)
 
 # Source files
 file(GLOB SOURCES
@@ -21,10 +22,8 @@ file(GLOB SOURCES
 # Add the executable
 add_executable(sengine ${SOURCES})
 
-# Link libraries
-target_link_libraries(sengine
-    glfw
-)
+# Link GLFW to the executable
+target_link_libraries(sengine glfw)
 
 # Set build type to Debug if not specified
 if(NOT CMAKE_BUILD_TYPE)
@@ -33,3 +32,7 @@ endif()
 
 # Add debug flags
 set(CMAKE_C_FLAGS_DEBUG "-g")
+
+#add_compile_options(-Werror)
+
+#set(CMAKE_VERBOSE_MAKEFILE ON)

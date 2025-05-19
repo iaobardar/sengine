@@ -3,7 +3,6 @@
 
 #include <stddef.h>
 #include <glad/gl.h>
-// #include <GL/gl.h>
 #include "sstring.h"
 #include "sio.h"
 
@@ -12,10 +11,10 @@ typedef struct {
     size_t count;
     sstringview shaders[10];
     sstring src;
-} shaderlistfile;
+} shaderlistfile_t;
 
 // Function declarations
-shaderlistfile load_shader_file(char* filename);
+shaderlistfile_t load_shader_file(char* filename);
 GLuint init_shader(GLuint type, sstring* src);
 GLuint init_shader_program(sstring* vert_src, sstring* frag_src);
 
