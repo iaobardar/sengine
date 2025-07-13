@@ -2,11 +2,11 @@
 #include <math.h>
 #include "camera.h"
 
-void camera_set_angle(mat4 out, const vec3 org, float yaw, float pit)
+void camera_set_angle(mat4 out, const vec3 origin, float yaw, float pitch)
 {
     mat4 translate, orientation, perspective, temp;
-	mat4_set_translate(translate, -org[0], -org[1], -org[2]);
-	mat4_set_rotate(orientation, yaw, pit);
+	mat4_set_translate(translate, -origin[0], -origin[1], -origin[2]);
+	mat4_set_rotate(orientation, yaw, pitch);
 	mat4_set_perspective(perspective, .025, 20);
 
 	mat4_mult(translate, orientation, temp);

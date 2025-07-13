@@ -13,16 +13,9 @@ void main()
 
 #version 330 core
 
-out vec4 fColor;
-uniform vec4 fill_color;
+uniform mat4 camera_transform;
 
-uint rand(uint x)
-{
-    x ^= x << 13;
-    x ^= x >> 17;
-    x ^= x << 5;
-    return x;
-}
+out vec4 fColor;
 
 void main()
 {
@@ -30,6 +23,8 @@ void main()
     vec3 dx = vec3(d, 0, dFdx(gl_FragCoord.z));
     vec3 dy = vec3(0, d, dFdy(gl_FragCoord.z));
     vec3 normal = normalize(cross(dx, dy));
-    float light = dot(normal, normalize(vec3(1, 1, 1))) * .5 + .5;
+
+    vec3 light_pos = (camera_transform * vec4(3, 1, 2, 1)).xyz;
+    float light = dot(normal, normalize(light_pos)) * .5 + .5;
     fColor = mix(vec4(0, 0, 0, 1.0), vec4(1, 1, 1, 1.0), light);
 }

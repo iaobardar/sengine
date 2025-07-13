@@ -21,6 +21,8 @@ shaderlistfile_t load_shader_file(char* filename)
         .count = 0
     };
 
+    puts("bruh");
+
     printf("%zi\n", file_src.length);
 
     sstring shader_sep = sv_cstr("#--");

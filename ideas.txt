@@ -1,0 +1,4 @@
+- fireworks (hdr?)
+- island with tiny plane
+- pathfinding demos
+- cpu raytracing

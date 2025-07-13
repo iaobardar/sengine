@@ -1,20 +1,21 @@
+#include <assert.h>
+#include <stdio.h>
 #include "render_cube.h"
-#include "assert.h"
+#include "sshader.h"
 
-static const GLfloat verts[] = {
-    -1, -1, -1,
-    -1,  1, -1,
-     1,  1, -1,
-     1, -1, -1,
+static const GLfloat cube_verts[] = {
+    -.5, -.5, -.5,
+    -.5,  .5, -.5,
+     .5,  .5, -.5,
+     .5, -.5, -.5,
 
-    -1, -1,  1,
-    -1,  1,  1,
-     1,  1,  1,
-     1, -1,  1,
+    -.5, -.5,  .5,
+    -.5,  .5,  .5,
+     .5,  .5,  .5,
+     .5, -.5,  .5,
 };
 
-
-static const GLushort indices[] = {
+static const GLushort cube_indices[] = {
     #define quad(a, b, c, d) a, b, c, c, d, a
     quad(3, 2, 1, 0), // bottom
 
@@ -27,26 +28,35 @@ static const GLushort indices[] = {
     #undef quad
 };
 
-
-void init_cube_render_obj(cube_render_obj* obj, mat4 model_matrix)
+void create_cube_render_obj(cube_render_obj* cube)
 {
-    glGenVertexArrays(1, &obj->vao);
-    glBindVertexArray(obj->vao);
+    glGenVertexArrays(1, &cube->vao);
+    glBindVertexArray(cube->vao);
 
-    glGenBuffers(1, &obj->vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, obj->vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
+    GLuint new_buffs[2];
+    glGenBuffers(2, new_buffs);
+    cube->vbo = new_buffs[0];
+    cube->ibo = new_buffs[1];
 
-    glGenBuffers(1, &obj->ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, cube->vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_verts), cube_verts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube->ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_indices), cube_indices, GL_STATIC_DRAW);
 
-    //obj->model_matrix = model_matrix;
-    //obj->program = program;
-
-    assert(0);
-
-    // Set up vertex attributes
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 0, (void*)0);
+
+    shaderlistfile_t cube_shaders = load_shader_file("../resources/cube.glsl");
+    assert(cube_shaders.count >= 2);
+    cube->program = init_shader_program(&cube_shaders.shaders[0], &cube_shaders.shaders[1]);
+    assert(cube->program != 0);
+}
+
+void draw_cube(cube_render_obj* cube, mat4 camera_transform)
+{
+    glUseProgram(cube->program);
+    GLint camera_mat_ul = glGetUniformLocation(cube->program, "camera_transform");
+    glUniformMatrix4fv(camera_mat_ul, 1, GL_TRUE, (const GLfloat*)camera_transform);
+    glBindVertexArray(cube->vao);
+    glDrawElements(GL_TRIANGLES, sizeof(cube_indices) / sizeof(GLushort), GL_UNSIGNED_SHORT, (void*)0);
 }

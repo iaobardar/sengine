@@ -2,33 +2,37 @@
 #include <stdlib.h>
 #include "sio.h"
 
+static const size_t read_chunk_size = 512;
+
 size_t read_whole_file(const char* filename, void** data)
 {
-    const size_t read_chunk_size = 512;
+    //*data = (void*)-1;
 
     FILE* in_file = fopen(filename, "rb");
     if (!in_file) return 0;
 
     size_t used = 0;
-    size_t allocated = 0;
-    *data = NULL;
+    size_t allocation = 0;
 
-    do
+    *data = 0;
+
+    while (used == allocation)
     {
-        allocated += read_chunk_size;
-        *data = realloc(*data, allocated);
+        allocation += read_chunk_size;
+        *data = realloc(*data, allocation);
         
         if (!*data) {puts("Out of memory for file read."); exit(1);}
 
-        used += fread(data + used, 1, allocated - used, in_file);
-        //printf("read loop %zi %zi\n", allocated, used);
+        used += fread((char *)(*data) + used, 1, allocation - used, in_file);
+        printf("read loop %zi %zi\n", allocation, used);
     }
-    while (used == allocated);
 
-    // shrink back to fit only the used portion.
-    allocated = used;
-    *data = realloc(*data, allocated);
+    
 
     fclose(in_file);
-    return allocated;
+    *data = realloc(*data, used); // shrink back to fit only the used portion.
+
+    puts("lol");
+
+    return used;
 }
